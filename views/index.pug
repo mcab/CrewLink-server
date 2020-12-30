@@ -25,11 +25,43 @@ head
 		a:hover {
 			text-decoration: underline;
 		}
+		code::selection {
+			background-color: #5b5b5b;
+		}
+
+	script.
+		// via https://keestalkstech.com/2014/04/click-to-select-all-on-the-pre-element/+&cd=13&hl=en&ct=clnk&gl=us
+		function getClosest(el, tagName) {
+			tagName = tagName && tagName.toUpperCase();
+			if (!tagName || !el)
+				return null;
+			do
+				if (el.nodeName === tagName)
+				return el;
+			while (el = el.parentNode);
+			return null;
+		}
+		document.addEventListener('dblclick', e => {
+			let block = getClosest(e.target, "code");
+			if (block) {
+				let range = new Range();
+				range.setStart(block, 0);
+				range.setEnd(block, 1);
+				document.getSelection().removeAllRanges();
+				document.getSelection().addRange(range);
+			}
+		});
+
 img(src="https://github.com/ottomated/CrewLink/raw/master/logo.png")
 h1 CrewLink Server
-p This is a CrewLink Server running on #{address}.
 p There #{connectionCount === 1 ? 'is' : 'are'} currently #{connectionCount} connected user#{connectionCount === 1 ? '' : 's'}.
 p 
-	| To launch your own server, 
-	a(href="https://github.com/ottomated/CrewLink-server", target="_blank") click here
+	| To connect, follow the#{" "}
+	a(href="https://github.com/ottomated/CrewLink#installation", target="_blank") client setup instructions
+	| . Use#{" "}
+	code https://#{address}
+	|  as the voice server.
+p
+	| Want to set up your own server? Follow the#{" "}
+	a(href="https://github.com/ottomated/CrewLink-server", target="_blank") server setup instructions
 	| .
